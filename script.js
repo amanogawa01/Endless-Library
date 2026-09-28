@@ -12,26 +12,37 @@ var bookText = document.getElementById("book-text");
 var currentHexagon = "000000";
 
 var vocabulary = null;
+var templates = null;
 
 
 /*
- * Load vocabulary data.
+ * Load the library data.
  */
 
-fetch("data/vocabulary.json")
-    .then(function (response) {
+Promise.all([
+    fetch("data/vocabulary.json"),
+    fetch("data/templates.json")
+])
+    .then(function (responses) {
 
-        if (!response.ok) {
-            throw new Error(
-                "Could not load vocabulary.json"
-            );
+        for (var i = 0; i < responses.length; i++) {
+
+            if (!responses[i].ok) {
+                throw new Error(
+                    "Could not load library data."
+                );
+            }
         }
 
-        return response.json();
+        return Promise.all([
+            responses[0].json(),
+            responses[1].json()
+        ]);
     })
     .then(function (data) {
 
-        vocabulary = data;
+        vocabulary = data[0];
+        templates = data[1];
 
         generateWalls();
     })
@@ -105,6 +116,12 @@ function createRandom(seed) {
 
 function choose(random, array) {
 
+    if (array.length === 0) {
+        throw new Error(
+            "Cannot choose from an empty array."
+        );
+    }
+
     var index =
         Math.floor(random() * array.length);
 
@@ -113,106 +130,599 @@ function choose(random, array) {
 
 
 /*
- * Generate a sentence.
+ * Select an item that is different from
+ * a previous value when possible.
  */
 
-function generateSentence(random) {
+function chooseDifferent(
+    random,
+    array,
+    previous
+) {
 
-    var subject =
-        choose(random, vocabulary.subjects);
+    if (array.length <= 1) {
+        return array[0];
+    }
 
-    var adjective =
-        choose(random, vocabulary.adjectives);
+    var choice =
+        choose(random, array);
 
-    var noun =
-        choose(random, vocabulary.nouns);
+    var attempts = 0;
 
-    var verb =
-        choose(random, vocabulary.verbs);
+    while (
+        choice === previous &&
+        attempts < 10
+    ) {
 
-    var adverb =
-        choose(random, vocabulary.adverbs);
+        choice =
+            choose(random, array);
 
-    var secondNoun =
-        choose(random, vocabulary.nouns);
+        attempts++;
+    }
 
-
-    var sentenceType =
-        Math.floor(random() * 5);
-
-
-    var sentence;
+    return choice;
+}
 
 
-    if (sentenceType === 0) {
+/*
+ * Select a noun with a specific property.
+ */
 
-        sentence =
-            subject +
-            " " +
-            verb +
-            " the " +
-            adjective +
-            " " +
-            noun +
-            " " +
-            adverb +
-            ".";
+function chooseNoun(
+    random,
+    property
+) {
 
-    } else if (sentenceType === 1) {
+    var matchingNouns =
+        vocabulary.nouns.filter(
+            function (noun) {
 
-        sentence =
-            "The " +
-            adjective +
-            " " +
-            noun +
-            " " +
-            verb +
-            " while the " +
-            secondNoun +
-            " remained nearby.";
+                return noun[property] === true;
+            }
+        );
 
-    } else if (sentenceType === 2) {
 
-        sentence =
-            subject +
-            " " +
-            verb +
-            " the " +
-            noun +
-            " and discovered something " +
-            adjective +
-            ".";
+    if (matchingNouns.length === 0) {
 
-    } else if (sentenceType === 3) {
-
-        sentence =
-            "Beyond the " +
-            adjective +
-            " " +
-            noun +
-            ", the " +
-            secondNoun +
-            " waited.";
-
-    } else {
-
-        sentence =
-            "For a moment, " +
-            subject +
-            " " +
-            verb +
-            " and listened to the " +
-            adjective +
-            " " +
-            noun +
-            ".";
-
+        throw new Error(
+            "No nouns found for property: " +
+            property
+        );
     }
 
 
-    return (
-        sentence.charAt(0).toUpperCase() +
-        sentence.slice(1)
+    return choose(
+        random,
+        matchingNouns
+    ).word;
+}
+
+
+/*
+ * Select a verb with a specific target.
+ */
+
+function chooseVerbByTarget(
+    random,
+    verbs,
+    target
+) {
+
+    var matchingVerbs =
+        verbs.filter(
+            function (verb) {
+
+                return verb.target === target;
+            }
+        );
+
+
+    if (matchingVerbs.length === 0) {
+
+        throw new Error(
+            "No verbs found for target: " +
+            target
+        );
+    }
+
+
+    return choose(
+        random,
+        matchingVerbs
+    );
+}
+
+
+/*
+ * Select a noun compatible with a verb.
+ */
+
+function chooseVerbTarget(
+    random,
+    verb
+) {
+
+    return chooseNoun(
+        random,
+        verb.target
+    );
+}
+
+
+/*
+ * Replace every occurrence of a placeholder.
+ */
+
+function replacePlaceholder(
+    sentence,
+    placeholder,
+    value
+) {
+
+    return sentence
+        .split(placeholder)
+        .join(value);
+}
+
+
+/*
+ * Fill a structured sentence template.
+ */
+
+function fillTemplate(
+    template,
+    random,
+    previousSubject
+) {
+
+    var sentence =
+        template.template;
+
+
+    var subject =
+        chooseDifferent(
+            random,
+            vocabulary.subjects,
+            previousSubject
+        );
+
+
+    var secondSubject =
+        chooseDifferent(
+            random,
+            vocabulary.subjects,
+            subject
+        );
+
+
+    var replacements = {
+
+        "{subject}":
+            subject,
+
+        "{secondSubject}":
+            secondSubject,
+
+        "{place}":
+            chooseNoun(
+                random,
+                "place"
+            ),
+
+        "{walkablePlace}":
+            chooseNoun(
+                random,
+                "walkable"
+            ),
+
+        "{adjective}":
+            choose(
+                random,
+                vocabulary.adjectives
+            ),
+
+        "{adverb}":
+            choose(
+                random,
+                vocabulary.adverbs
+            )
+    };
+
+
+    /*
+     * Perception.
+     */
+
+    if (
+        template.type === "perception" ||
+        template.type === "perception_adverb"
+    ) {
+
+        var perceptionVerb =
+            choose(
+                random,
+                vocabulary.perceptionVerbs
+            );
+
+
+        replacements["{perceptionVerb}"] =
+            perceptionVerb.word;
+
+
+        replacements["{perceptionTarget}"] =
+            chooseVerbTarget(
+                random,
+                perceptionVerb
+            );
+    }
+
+
+    /*
+     * Movement with a destination.
+     */
+
+    if (
+        template.type === "movement_enter" ||
+        template.type === "movement_cross" ||
+        template.type === "movement_return" ||
+        template.type === "movement_walk"
+    ) {
+
+        var movementTarget;
+
+
+        if (template.type === "movement_enter") {
+
+            var enterVerb =
+                chooseVerbByTarget(
+                    random,
+                    vocabulary.movementVerbs,
+                    "enterable"
+                );
+
+
+            replacements["{movementVerb}"] =
+                enterVerb.word;
+
+
+            movementTarget =
+                chooseVerbTarget(
+                    random,
+                    enterVerb
+                );
+        }
+
+
+        if (template.type === "movement_cross") {
+
+            var crossVerb =
+                chooseVerbByTarget(
+                    random,
+                    vocabulary.movementVerbs,
+                    "crossable"
+                );
+
+
+            replacements["{movementVerb}"] =
+                crossVerb.word;
+
+
+            movementTarget =
+                chooseVerbTarget(
+                    random,
+                    crossVerb
+                );
+        }
+
+
+        if (template.type === "movement_return") {
+
+            var returnVerb =
+                chooseVerbByTarget(
+                    random,
+                    vocabulary.movementVerbs,
+                    "place"
+                );
+
+
+            replacements["{movementVerb}"] =
+                returnVerb.word;
+
+
+            movementTarget =
+                chooseVerbTarget(
+                    random,
+                    returnVerb
+                );
+        }
+
+
+        if (template.type === "movement_walk") {
+
+            var walkVerb =
+                chooseVerbByTarget(
+                    random,
+                    vocabulary.movementVerbs,
+                    "walkable"
+                );
+
+
+            replacements["{movementVerb}"] =
+                walkVerb.word;
+
+
+            movementTarget =
+                chooseVerbTarget(
+                    random,
+                    walkVerb
+                );
+        }
+
+
+        replacements["{movementTarget}"] =
+            movementTarget;
+    }
+
+
+    /*
+     * Movement without a destination.
+     *
+     * Only use "returned" and "walked" here,
+     * since "entered" and "left" normally
+     * require a destination.
+     */
+
+    if (template.type === "subject_movement") {
+
+        var simpleMovementVerbs =
+            vocabulary.movementVerbs.filter(
+                function (verb) {
+
+                    return (
+                        verb.word === "returned" ||
+                        verb.word === "walked"
+                    );
+                }
+            );
+
+
+        replacements["{movementVerb}"] =
+            choose(
+                random,
+                simpleMovementVerbs
+            ).word;
+    }
+
+
+    /*
+     * Discovery.
+     */
+
+    if (template.type === "discovery") {
+
+        var discoveryVerb =
+            choose(
+                random,
+                vocabulary.discoveryVerbs
+            );
+
+
+        replacements["{discoveryVerb}"] =
+            discoveryVerb.word;
+
+
+        replacements["{discoveryTarget}"] =
+            chooseVerbTarget(
+                random,
+                discoveryVerb
+            );
+    }
+
+
+    if (template.type === "subject_discovery") {
+
+        replacements["{discoveryVerb}"] =
+            choose(
+                random,
+                vocabulary.discoveryVerbs
+            ).word;
+    }
+
+
+    /*
+     * Memory.
+     */
+
+    if (template.type === "memory") {
+
+        var memoryVerb =
+            choose(
+                random,
+                vocabulary.memoryVerbs
+            );
+
+
+        replacements["{memoryVerb}"] =
+            memoryVerb.word;
+
+
+        replacements["{memoryTarget}"] =
+            chooseVerbTarget(
+                random,
+                memoryVerb
+            );
+    }
+
+
+    if (template.type === "subject_memory") {
+
+        replacements["{memoryVerb}"] =
+            choose(
+                random,
+                vocabulary.memoryVerbs
+            ).word;
+    }
+
+
+    /*
+     * Thought.
+     */
+
+    if (template.type === "thought") {
+
+        var thoughtVerb =
+            choose(
+                random,
+                vocabulary.thoughtVerbs
+            );
+
+
+        replacements["{thoughtVerb}"] =
+            thoughtVerb.word;
+
+
+        replacements["{thoughtTarget}"] =
+            chooseVerbTarget(
+                random,
+                thoughtVerb
+            );
+    }
+
+
+    /*
+     * Actions.
+     */
+
+    if (
+        template.type === "action" ||
+        template.type === "action_adverb"
+    ) {
+
+        var actionVerb =
+            choose(
+                random,
+                vocabulary.actionVerbs
+            );
+
+
+        replacements["{actionVerb}"] =
+            actionVerb.word;
+
+
+        replacements["{actionTarget}"] =
+            chooseVerbTarget(
+                random,
+                actionVerb
+            );
+    }
+
+
+    /*
+     * State.
+     */
+
+    if (template.type === "state") {
+
+        var stateVerb =
+            choose(
+                random,
+                vocabulary.stateVerbs
+            );
+
+
+        replacements["{stateVerb}"] =
+            stateVerb.word;
+
+
+        replacements["{stateTarget}"] =
+            chooseVerbTarget(
+                random,
+                stateVerb
+            );
+    }
+
+
+    /*
+     * Replace all placeholders.
+     */
+
+    for (var placeholder in replacements) {
+
+        sentence =
+            replacePlaceholder(
+                sentence,
+                placeholder,
+                replacements[placeholder]
+            );
+    }
+
+
+    return {
+        text:
+            sentence.charAt(0).toUpperCase() +
+            sentence.slice(1),
+
+        subject:
+            subject,
+
+        type:
+            template.type
+    };
+}
+
+
+/*
+ * Generate a sentence.
+ */
+
+function generateSentence(
+    random,
+    previousSubject,
+    previousType
+) {
+
+    var availableTemplates =
+        templates.sentences;
+
+
+    /*
+     * Avoid using the same template
+     * type twice in a row.
+     */
+
+    if (availableTemplates.length > 1) {
+
+        var filteredTemplates =
+            availableTemplates.filter(
+                function (template) {
+
+                    return (
+                        template.type !==
+                        previousType
+                    );
+                }
+            );
+
+
+        if (filteredTemplates.length > 0) {
+
+            availableTemplates =
+                filteredTemplates;
+        }
+    }
+
+
+    var template =
+        choose(
+            random,
+            availableTemplates
+        );
+
+
+    return fillTemplate(
+        template,
+        random,
+        previousSubject
     );
 }
 
@@ -234,6 +744,10 @@ function generateBookText(address) {
 
     var paragraphs = [];
 
+    var previousSubject = null;
+
+    var previousType = null;
+
 
     for (var i = 0; i < paragraphCount; i++) {
 
@@ -245,9 +759,25 @@ function generateBookText(address) {
 
         for (var j = 0; j < sentenceCount; j++) {
 
+            var generated =
+                generateSentence(
+                    random,
+                    previousSubject,
+                    previousType
+                );
+
+
             sentences.push(
-                generateSentence(random)
+                generated.text
             );
+
+
+            previousSubject =
+                generated.subject;
+
+
+            previousType =
+                generated.type;
         }
 
 
@@ -325,12 +855,13 @@ function createShelf(
 
     for (var i = 1; i <= 20; i++) {
 
-        var book = createBook(
-            hexagon,
-            wall,
-            shelfNumber,
-            i
-        );
+        var book =
+            createBook(
+                hexagon,
+                wall,
+                shelfNumber,
+                i
+            );
 
         shelf.appendChild(book);
     }
@@ -373,11 +904,12 @@ function createWall(
 
     for (var i = 1; i <= 4; i++) {
 
-        var shelf = createShelf(
-            hexagon,
-            wallNumber,
-            i
-        );
+        var shelf =
+            createShelf(
+                hexagon,
+                wallNumber,
+                i
+            );
 
         shelves.appendChild(shelf);
     }
@@ -395,7 +927,7 @@ function createWall(
 
 function generateWalls() {
 
-    if (!vocabulary) {
+    if (!vocabulary || !templates) {
         return;
     }
 
@@ -405,10 +937,11 @@ function generateWalls() {
 
     for (var i = 1; i <= 4; i++) {
 
-        var wall = createWall(
-            currentHexagon,
-            i
-        );
+        var wall =
+            createWall(
+                currentHexagon,
+                i
+            );
 
         room.appendChild(wall);
     }
@@ -447,8 +980,23 @@ function openBook(
         " / Book " + position;
 
 
-    bookText.innerHTML =
-        generateBookText(address);
+    try {
+
+        bookText.innerHTML =
+            generateBookText(address);
+
+    } catch (error) {
+
+        console.error(
+            "Could not generate book " +
+            address,
+            error
+        );
+
+
+        bookText.innerHTML =
+            "<p>This book could not be generated.</p>";
+    }
 
 
     bookViewer.classList.remove("hidden");

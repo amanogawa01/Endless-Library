@@ -1,58 +1,418 @@
 {
-    "nouns": [
-        "library",
-        "room",
-        "door",
-        "house",
-        "city",
-        "road",
-        "window",
-        "garden",
-        "river",
-        "mountain",
-        "ocean",
-        "forest",
-        "machine",
-        "letter",
-        "book",
-        "story",
-        "memory",
-        "shadow",
-        "voice",
-        "clock",
-        "station",
-        "village",
-        "tower",
-        "field",
-        "stone",
-        "night",
-        "morning",
-        "world",
-        "dream",
-        "journey"
+    "subjects": [
+        "the traveler",
+        "the stranger",
+        "the librarian",
+        "the visitor",
+        "the old man",
+        "the young woman",
+        "the child",
+        "the keeper",
+        "the scholar"
     ],
 
-    "verbs": [
-        "opened",
-        "closed",
-        "remembered",
-        "forgot",
-        "watched",
-        "followed",
-        "entered",
-        "left",
-        "crossed",
-        "found",
-        "lost",
-        "carried",
-        "heard",
-        "saw",
-        "waited",
-        "walked",
-        "returned",
-        "searched",
-        "discovered",
-        "considered"
+    "nouns": [
+        {
+            "word": "library",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "searchable": true,
+            "followable": true
+        },
+        {
+            "word": "room",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "searchable": true,
+            "followable": true
+        },
+        {
+            "word": "house",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "searchable": true,
+            "followable": true
+        },
+        {
+            "word": "city",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "searchable": true,
+            "followable": true
+        },
+        {
+            "word": "road",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": false,
+            "leavable": false,
+            "walkable": true,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "garden",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "river",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": false,
+            "leavable": false,
+            "walkable": false,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "mountain",
+            "place": true,
+            "visible": true,
+            "crossable": false,
+            "enterable": false,
+            "leavable": false,
+            "walkable": true,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "ocean",
+            "place": true,
+            "visible": true,
+            "crossable": false,
+            "enterable": false,
+            "leavable": false,
+            "walkable": false,
+            "discoverable": true,
+            "followable": false
+        },
+        {
+            "word": "forest",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "station",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "village",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "tower",
+            "place": true,
+            "visible": true,
+            "crossable": false,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "followable": false
+        },
+        {
+            "word": "field",
+            "place": true,
+            "visible": true,
+            "crossable": true,
+            "enterable": true,
+            "leavable": true,
+            "walkable": true,
+            "discoverable": true,
+            "followable": true
+        },
+        {
+            "word": "world",
+            "place": true,
+            "visible": true,
+            "crossable": false,
+            "enterable": false,
+            "leavable": false,
+            "walkable": false,
+            "discoverable": true,
+            "followable": false
+        },
+
+        {
+            "word": "door",
+            "object": true,
+            "visible": true,
+            "portable": false,
+            "openable": true,
+            "closable": true,
+            "followable": false,
+            "searchable": false,
+            "discoverable": true
+        },
+        {
+            "word": "window",
+            "object": true,
+            "visible": true,
+            "portable": false,
+            "openable": true,
+            "closable": true,
+            "followable": false,
+            "searchable": false,
+            "discoverable": true
+        },
+        {
+            "word": "machine",
+            "object": true,
+            "visible": true,
+            "portable": true,
+            "openable": false,
+            "closable": false,
+            "followable": false,
+            "searchable": true,
+            "discoverable": true
+        },
+        {
+            "word": "letter",
+            "object": true,
+            "visible": true,
+            "portable": true,
+            "openable": true,
+            "closable": true,
+            "followable": false,
+            "searchable": true,
+            "discoverable": true,
+            "rememberable": true
+        },
+        {
+            "word": "book",
+            "object": true,
+            "visible": true,
+            "portable": true,
+            "openable": true,
+            "closable": true,
+            "followable": false,
+            "searchable": true,
+            "discoverable": true,
+            "rememberable": true
+        },
+        {
+            "word": "clock",
+            "object": true,
+            "visible": true,
+            "portable": true,
+            "openable": false,
+            "closable": false,
+            "followable": false,
+            "searchable": false,
+            "discoverable": true
+        },
+        {
+            "word": "stone",
+            "object": true,
+            "visible": true,
+            "portable": true,
+            "openable": false,
+            "closable": false,
+            "followable": false,
+            "searchable": false,
+            "discoverable": true
+        },
+
+        {
+            "word": "story",
+            "abstract": true,
+            "rememberable": true,
+            "discoverable": true
+        },
+        {
+            "word": "memory",
+            "abstract": true,
+            "rememberable": true,
+            "discoverable": true
+        },
+        {
+            "word": "shadow",
+            "abstract": true,
+            "visible": true,
+            "discoverable": true
+        },
+        {
+            "word": "voice",
+            "abstract": true,
+            "audible": true,
+            "discoverable": true
+        },
+        {
+            "word": "dream",
+            "abstract": true,
+            "rememberable": true,
+            "discoverable": true
+        },
+        {
+            "word": "journey",
+            "abstract": true,
+            "rememberable": true,
+            "discoverable": true
+        },
+        {
+            "word": "night",
+            "abstract": true,
+            "visible": true,
+            "rememberable": true,
+            "discoverable": true
+        },
+        {
+            "word": "morning",
+            "abstract": true,
+            "visible": true,
+            "rememberable": true,
+            "discoverable": true
+        }
+    ],
+
+    "perceptionVerbs": [
+        {
+            "word": "saw",
+            "target": "visible"
+        },
+        {
+            "word": "heard",
+            "target": "audible"
+        },
+        {
+            "word": "watched",
+            "target": "visible"
+        }
+    ],
+
+    "movementVerbs": [
+        {
+            "word": "entered",
+            "target": "enterable"
+        },
+        {
+            "word": "left",
+            "target": "leavable"
+        },
+        {
+            "word": "crossed",
+            "target": "crossable"
+        },
+        {
+            "word": "returned",
+            "target": "place"
+        },
+        {
+            "word": "walked",
+            "target": "walkable"
+        }
+    ],
+
+    "discoveryVerbs": [
+        {
+            "word": "found",
+            "target": "discoverable"
+        },
+        {
+            "word": "discovered",
+            "target": "discoverable"
+        }
+    ],
+
+    "memoryVerbs": [
+        {
+            "word": "remembered",
+            "target": "rememberable"
+        },
+        {
+            "word": "forgot",
+            "target": "rememberable"
+        }
+    ],
+
+    "thoughtVerbs": [
+        {
+            "word": "considered",
+            "target": "rememberable"
+        }
+    ],
+
+    "actionVerbs": [
+        {
+            "word": "opened",
+            "target": "openable"
+        },
+        {
+            "word": "closed",
+            "target": "closable"
+        },
+        {
+            "word": "carried",
+            "target": "portable"
+        },
+        {
+            "word": "followed",
+            "target": "followable"
+        },
+        {
+            "word": "searched",
+            "target": "searchable"
+        },
+        {
+            "word": "lost",
+            "target": "portable"
+        }
+    ],
+
+    "stateVerbs": [
+        {
+            "word": "waited",
+            "target": "place"
+        }
     ],
 
     "adjectives": [
@@ -89,17 +449,5 @@
         "carelessly",
         "patiently",
         "deliberately"
-    ],
-
-    "subjects": [
-        "the traveler",
-        "the stranger",
-        "the librarian",
-        "the visitor",
-        "the old man",
-        "the young woman",
-        "the child",
-        "the keeper",
-        "the scholar"
     ]
 }

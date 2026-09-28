@@ -1,14 +1,80 @@
 {
     "sentences": [
-        "{subject} {verb} the {adjective} {noun} {adverb}.",
-        "The {adjective} {noun} {verb} while the {secondNoun} remained nearby.",
-        "{subject} {verb} the {noun} and discovered something {adjective}.",
-        "Beyond the {adjective} {noun}, the {secondNoun} waited.",
-        "For a moment, {subject} {verb} and listened to the {adjective} {noun}.",
-        "The {subject} looked toward the {noun} and {verb} quietly.",
-        "Nothing moved inside the {adjective} {noun}, but the {subject} remained.",
-        "After the {noun} disappeared, {subject} {verb} toward the {adjective} {noun}.",
-        "The {subject} had never seen such a {adjective} {noun} before.",
-        "Somewhere beyond the {noun}, someone {verb} in the darkness."
+        {
+            "type": "perception",
+            "template": "{subject} {perceptionVerb} the {adjective} {perceptionTarget}."
+        },
+        {
+            "type": "perception_adverb",
+            "template": "{subject} {perceptionVerb} the {adjective} {perceptionTarget} {adverb}."
+        },
+
+        {
+            "type": "movement_enter",
+            "template": "{subject} {movementVerb} the {adjective} {movementTarget}."
+        },
+        {
+            "type": "movement_cross",
+            "template": "{subject} {movementVerb} the {adjective} {movementTarget}."
+        },
+        {
+            "type": "movement_return",
+            "template": "{subject} {movementVerb} to the {adjective} {movementTarget}."
+        },
+        {
+            "type": "movement_walk",
+            "template": "{subject} {movementVerb} toward the {adjective} {movementTarget}."
+        },
+        {
+            "type": "subject_movement",
+            "template": "{subject} {movementVerb} quietly."
+        },
+
+        {
+            "type": "discovery",
+            "template": "{subject} {discoveryVerb} the {adjective} {discoveryTarget}."
+        },
+        {
+            "type": "subject_discovery",
+            "template": "{subject} {discoveryVerb} something unexpected."
+        },
+
+        {
+            "type": "memory",
+            "template": "{subject} {memoryVerb} the {adjective} {memoryTarget}."
+        },
+        {
+            "type": "subject_memory",
+            "template": "{subject} {memoryVerb} something from the past."
+        },
+
+        {
+            "type": "thought",
+            "template": "{subject} {thoughtVerb} the {adjective} {thoughtTarget}."
+        },
+
+        {
+            "type": "action",
+            "template": "{subject} {actionVerb} the {adjective} {actionTarget}."
+        },
+        {
+            "type": "action_adverb",
+            "template": "{subject} {actionVerb} the {adjective} {actionTarget} {adverb}."
+        },
+
+        {
+            "type": "state",
+            "template": "{subject} {stateVerb} beside the {adjective} {stateTarget}."
+        },
+
+        {
+            "type": "perception_something",
+            "template": "{subject} heard something near the {adjective} {place}."
+        },
+
+        {
+            "type": "subject_and_subject",
+            "template": "{subject} and {secondSubject} walked toward the {adjective} {walkablePlace}."
+        }
     ]
 }
