@@ -1,0 +1,14 @@
+{
+    "sentences": [
+        "{subject} {verb} the {adjective} {noun} {adverb}.",
+        "The {adjective} {noun} {verb} while the {secondNoun} remained nearby.",
+        "{subject} {verb} the {noun} and discovered something {adjective}.",
+        "Beyond the {adjective} {noun}, the {secondNoun} waited.",
+        "For a moment, {subject} {verb} and listened to the {adjective} {noun}.",
+        "The {subject} looked toward the {noun} and {verb} quietly.",
+        "Nothing moved inside the {adjective} {noun}, but the {subject} remained.",
+        "After the {noun} disappeared, {subject} {verb} toward the {adjective} {noun}.",
+        "The {subject} had never seen such a {adjective} {noun} before.",
+        "Somewhere beyond the {noun}, someone {verb} in the darkness."
+    ]
+}
