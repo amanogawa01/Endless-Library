@@ -1,0 +1,140 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #111111;
+    color: #dddddd;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+#page {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+
+header {
+    padding: 40px 0 25px 0;
+    border-bottom: 1px solid #444444;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 40px;
+    font-weight: normal;
+    letter-spacing: 2px;
+}
+
+header p {
+    margin-top: 10px;
+    color: #888888;
+    font-size: 16px;
+}
+
+/* Main content */
+
+main {
+    padding: 40px 0;
+}
+
+#library {
+    text-align: center;
+}
+
+#library h2 {
+    font-size: 28px;
+    font-weight: normal;
+}
+
+#library p {
+    color: #999999;
+}
+
+/* Footer */
+
+footer {
+    padding: 25px 0;
+    border-top: 1px solid #444444;
+    text-align: center;
+    color: #666666;
+    font-size: 13px;
+}
+/* Library room */
+
+#room-header {
+    margin-bottom: 30px;
+}
+
+#room-header h2 {
+    margin-bottom: 5px;
+}
+
+#room-header p {
+    margin-top: 0;
+    color: #666666;
+}
+
+#room {
+    width: 100%;
+    min-height: 500px;
+    padding: 30px;
+    box-sizing: border-box;
+
+    background-color: #181818;
+    border: 1px solid #444444;
+}
+
+.wall {
+    width: 100%;
+}
+
+.wall h3 {
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: normal;
+    color: #888888;
+}
+
+.shelf {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+
+    min-height: 100px;
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background-color: #242424;
+    border-bottom: 8px solid #4a3728;
+}
+
+.book {
+    width: 70px;
+    height: 70px;
+
+    padding: 8px;
+    box-sizing: border-box;
+
+    background-color: #303030;
+    border: 1px solid #555555;
+
+    font-size: 11px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.book:hover {
+    background-color: #3a3a3a;
+}
