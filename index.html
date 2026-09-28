@@ -1,66 +1,94 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
 
-<title>Endless Library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+    <title>Endless Library</title>
 
-<script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-<div id="page">
 
-    <header>
-        <h1>Endless Library</h1>
+    <div id="page">
 
-        <p>
-            A library containing every possible book.
-        </p>
-    </header>
+        <header>
+            <h1>Endless Library</h1>
 
-    <main>
+            <p>
+                A library containing every possible book.
+            </p>
+        </header>
 
-        <section id="library">
+        <main>
 
-            <div id="room-header">
+            <section id="library">
 
-                <h2>Hexagon 000000</h2>
+                <div id="room-header">
 
-                <p>
-                    Room 000000
+                    <h2 id="room-name">
+                        Hexagon 000000
+                    </h2>
+
+                    <p>
+                        Room 000000
+                    </p>
+
+                    <div id="room-navigation">
+
+                        <button id="previous-room" type="button">
+                            Previous Room
+                        </button>
+
+                        <button id="next-room" type="button">
+                            Next Room
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div id="room"></div>
+
+            </section>
+
+        </main>
+
+        <footer>
+            <p>Endless Library</p>
+        </footer>
+
+        <div id="book-viewer" class="hidden">
+
+            <div id="book">
+
+                <button id="close-book" type="button">
+                    Close Book
+                </button>
+
+                <h2 id="book-title">
+                    Book
+                </h2>
+
+                <p id="book-address">
+                    Address
                 </p>
 
-            </div>
-
-            <div id="room">
-
-                <div class="wall">
-
-                    <h3>Wall 1</h3>
-
-                    <div class="shelf"></div>
-
+                <div id="book-text">
+                    <p>
+                        This book has not been generated yet.
+                    </p>
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
-
-    <footer>
-        <p>Endless Library</p>
-    </footer>
-
-</div>
+    </div>
 
 </body>
 </html>

@@ -66,7 +66,8 @@ footer {
     color: #666666;
     font-size: 13px;
 }
-/* Library room */
+
+/* Room header */
 
 #room-header {
     margin-bottom: 30px;
@@ -81,52 +82,111 @@ footer {
     color: #666666;
 }
 
+/* Hexagonal room */
+
 #room {
+    position: relative;
+
     width: 100%;
-    min-height: 500px;
-    padding: 30px;
+    min-height: 700px;
+
+    padding: 80px;
+
     box-sizing: border-box;
 
-    background-color: #181818;
-    border: 1px solid #444444;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: center;
+    gap: 70px 50px;
+
+    isolation: isolate;
 }
+
+/* Hexagon background */
+
+#room::before {
+    content: "";
+
+    position: absolute;
+
+    z-index: -1;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: #181818;
+
+    border: 1px solid #444444;
+
+    clip-path: polygon(
+        15% 0%,
+        85% 0%,
+        100% 50%,
+        85% 100%,
+        15% 100%,
+        0% 50%
+    );
+}
+
+/* Walls */
 
 .wall {
     width: 100%;
+    min-width: 0;
 }
 
 .wall h3 {
-    margin-top: 0;
+    margin: 0 0 15px 0;
+
     font-size: 18px;
     font-weight: normal;
     color: #888888;
 }
 
+/* Shelves */
+
+.shelves {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .shelf {
+    width: 100%;
+
     display: flex;
     align-items: flex-end;
-    gap: 4px;
+    justify-content: center;
+    flex-wrap: wrap;
 
-    min-height: 100px;
-    padding: 20px;
+    gap: 2px;
+
+    min-height: 75px;
+    padding: 10px;
 
     box-sizing: border-box;
 
     background-color: #242424;
-    border-bottom: 8px solid #4a3728;
+    border-bottom: 5px solid #4a3728;
 }
 
-.book {
-    width: 70px;
-    height: 70px;
+/* Books */
 
-    padding: 8px;
+.book {
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 55px;
+
+    padding: 4px;
     box-sizing: border-box;
 
     background-color: #303030;
     border: 1px solid #555555;
 
-    font-size: 11px;
+    font-size: 8px;
 
     display: flex;
     align-items: center;
@@ -137,4 +197,94 @@ footer {
 
 .book:hover {
     background-color: #3a3a3a;
+}
+
+/* Book viewer */
+
+#book-viewer {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.85);
+
+    z-index: 100;
+}
+
+#book-viewer.hidden {
+    display: none;
+}
+
+/* Book */
+
+#book {
+    width: 80%;
+    max-width: 700px;
+    min-height: 500px;
+
+    padding: 40px;
+
+    box-sizing: border-box;
+
+    background-color: #181818;
+
+    border: 1px solid #555555;
+
+    text-align: left;
+}
+
+#close-book {
+    float: right;
+
+    padding: 8px 14px;
+
+    background-color: #242424;
+    color: #cccccc;
+
+    border: 1px solid #555555;
+
+    cursor: pointer;
+}
+
+#close-book:hover {
+    background-color: #333333;
+}
+
+#book-title {
+    margin-top: 0;
+
+    font-size: 28px;
+    font-weight: normal;
+}
+
+#book-address {
+    color: #777777;
+    font-size: 13px;
+}
+
+#book-text {
+    margin-top: 40px;
+
+    line-height: 1.7;
+    color: #cccccc;
+}
+
+/* Small screens */
+
+@media (max-width: 800px) {
+
+    #room {
+        padding: 60px 40px;
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
 }
